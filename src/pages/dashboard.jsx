@@ -1,4 +1,4 @@
-import Input from "@/module/input";
+import Input from "@/module/Input";
 import { Button } from "@mui/material";
 import axios from "axios";
 import { getSession, signOut, useSession } from "next-auth/react";
