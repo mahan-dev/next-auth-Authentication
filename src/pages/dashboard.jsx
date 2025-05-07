@@ -1,4 +1,6 @@
+import { PageNotValidate } from "@/helper/PageValidation";
 import Input from "@/module/Input";
+import styles from "./registerForm.module.css";
 import { Button } from "@mui/material";
 import axios from "axios";
 import { getSession, signOut, useSession } from "next-auth/react";
@@ -13,15 +15,7 @@ const Dashboard = () => {
     password: "",
   });
   const userEmail = data?.user.email || "";
-
-  useEffect(() => {
-    if (status === "authenticated") {
-      console.log(data);
-    } else {
-      console.log(data);
-    }
-    console.log(form);
-  }, [status]);
+  const name = userEmail.split("@")[0];
 
   const logoutHandler = () => {
     signOut();
@@ -64,10 +58,6 @@ const Dashboard = () => {
 
   const changeHandler = (e) => {
     const { name, value } = e.target;
-    // setForm((prev) => ({
-    //   ...prev,
-    //   [name]: value,
-    // }));
 
     setForm({
       ...form,
@@ -77,34 +67,38 @@ const Dashboard = () => {
   };
 
   return (
-    <section>
-      <h2 className="flex justify-center my-4">hi</h2>
+    <section className="mx-4">
+      <header className="flex flex-wrap justify-between my-4 gap-3">
+        <h3>{name}</h3>
 
-      <span>{userEmail}</span>
+        <div className="flex gap-3">
+          {status === "authenticated" && (
+            <Button onClick={logoutHandler} variant="contained">
+              Logout
+            </Button>
+          )}
+          <Button onClick={updateHandler} variant="contained">
+            Update User
+          </Button>
+        </div>
+      </header>
 
-      {status === "authenticated" && (
-        <Button onClick={logoutHandler} variant="contained">
-          Logout
-        </Button>
-      )}
-      <Button onClick={updateHandler} variant="contained">
-        Update User
-      </Button>
-
-      {formFields.map((item) => {
-        const { name, type, placeholder } = item;
-        return (
-          <Input
-            key={name}
-            className="!text-black"
-            name={name}
-            type={type}
-            placeholder={placeholder}
-            onChange={changeHandler}
-            value={form[name]}
-          />
-        );
-      })}
+      <div className="flex flex-col justify-center gap-4 w-[300px] mt-[2em] max-sm:w-full">
+        {formFields.map((item) => {
+          const { name, type, placeholder } = item;
+          return (
+            <Input
+              key={name}
+              className={styles.items__input}
+              name={name}
+              type={type}
+              placeholder={placeholder}
+              onChange={changeHandler}
+              value={form[name]}
+            />
+          );
+        })}
+      </div>
     </section>
   );
 };
@@ -112,19 +106,7 @@ const Dashboard = () => {
 export default Dashboard;
 
 export const getServerSideProps = async ({ req }) => {
-  // await connectDb();
   const session = await getSession({ req });
-  console.log(session);
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/sign-in",
-        permanent: false,
-      },
-    };
-  }
 
-  return {
-    props: {  session },
-  };
+  return PageNotValidate(session);
 };

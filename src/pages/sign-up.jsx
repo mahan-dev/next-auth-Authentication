@@ -104,8 +104,3 @@ const SignUp = () => {
 };
 
 export default SignUp;
-
-// export const getServerSideProps = async ({ req }) => {
-//   const session = await getSession({ req });
-//   return PageValidation(session);
-// };
