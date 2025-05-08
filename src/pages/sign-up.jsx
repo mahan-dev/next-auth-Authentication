@@ -43,14 +43,12 @@ const SignUp = () => {
       const res = await axios.post("/api/signUp", form);
       const data = await res.data;
       const success = data.status === "Success";
-      if(success) {
-
-        
+      if (success) {
         toast.success(data.message, duration);
         await new Promise((resolver) => setTimeout(resolver, 2000));
         router.replace("/sign-in");
       } else {
-        toast.error("data doesn't save")
+        toast.error("data doesn't save");
       }
     } catch (error) {
       toast.error("something went wrong", duration);

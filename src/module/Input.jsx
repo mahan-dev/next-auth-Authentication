@@ -3,7 +3,7 @@ import React from "react";
 const Input = ({ name, type, value, onChange, className }) => {
   return (
     <input
-    className={className}
+      className={className}
       name={name}
       type={type}
       value={value}

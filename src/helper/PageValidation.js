@@ -16,9 +16,7 @@ export const PageValidation = (token) => {
 };
 
 export const PageNotValidate = (token) => {
-    
   if (!token) {
-    console.log("hi im working")
     return {
       redirect: {
         destination: "/sign-in",

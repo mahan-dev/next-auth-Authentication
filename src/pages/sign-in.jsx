@@ -47,11 +47,17 @@ const SignIn = () => {
     });
 
     const success = res.status === 200;
+    const errorMessage = res?.error ? res.error : null;
 
     if (success) {
       toast.success("successfully loggedIn", duration);
       await new Promise((resolver) => setTimeout(resolver, 2000));
       router.push("/dashboard");
+      return;
+    }
+    if (errorMessage) {
+      toast.error(errorMessage, duration);
+      console.log(errorMessage);
     } else {
       toast.error("something went wrong", duration);
     }
@@ -97,7 +103,6 @@ const SignIn = () => {
 export default SignIn;
 
 export const getServerSideProps = async ({ req }) => {
-  console.log(req, "this is user server");
   const session = await getSession({ req });
   if (session) {
     return PageValidation(session);

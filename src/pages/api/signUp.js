@@ -25,7 +25,10 @@ const handler = async (req, res) => {
       .json({ status: "Failed", message: "user already exist" });
   }
   const encryptedPassword = await hashedPassword(password);
-  const newUser = await User.create({ email: email, password: encryptedPassword });
+  const newUser = await User.create({
+    email: email,
+    password: encryptedPassword,
+  });
 
   res.status(201).json({
     status: "Success",
